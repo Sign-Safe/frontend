@@ -11,7 +11,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
     <header className="header">
       <div className="header-container">
         <div className="logo">
-          <h1>🛡️ 독소조항 탐지기</h1>
+          <h1>🛡️ Sign Safe</h1>
         </div>
         
         <nav className="navigation">

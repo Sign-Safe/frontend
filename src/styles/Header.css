@@ -1,6 +1,6 @@
 .header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: #EEEEEE;
+  color: #333;
   padding: 24px 40px;
   box-shadow: none;
   position: relative;
@@ -33,9 +33,9 @@
 
 .nav-button {
   padding: 10px 20px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: #EEEEEE;
+  color: #333;
+  border: 2px solid #DDDDDD;
   border-radius: 6px;
   font-size: 16px;
   font-weight: 600;
@@ -45,14 +45,14 @@
 }
 
 .nav-button:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.5);
+  background: #DDDDDD;
+  border-color: #CCCCCC;
 }
 
 .nav-button.active {
-  background: rgba(255, 255, 255, 0.95);
-  color: #667eea;
-  border-color: white;
+  background: #777C6D;
+  color: white;
+  border-color: #777C6D;
 }
 
 .nav-button:disabled {
