@@ -81,3 +81,15 @@
     min-width: 120px;
   }
 }
+
+.icon-adjust {
+  display: inline-block; /* Ensure vertical-align works */
+  vertical-align: -0.15em; /* Adjust as needed */
+  margin-right: 2px; /* Move icon slightly left/closer to text */
+  font-size: 1.1em; /* Slightly increase icon size */
+}
+
+.text-adjust {
+  display: inline-block; /* Ensure vertical-align works */
+  vertical-align: 0.1em; /* Slightly lower the text */
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { MdTextFields } from 'react-icons/md';
 import '../styles/Header.css';
 
 interface HeaderProps {
@@ -19,7 +20,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
             className={`nav-button ${currentPage === 'text-input' ? 'active' : ''}`}
             onClick={() => onPageChange('text-input')}
           >
-            📝 텍스트 입력
+            <span className="icon-adjust"><MdTextFields /></span> <span className="text-adjust">텍스트 입력</span>
           </button>
           
           <button

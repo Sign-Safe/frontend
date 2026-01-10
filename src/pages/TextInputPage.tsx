@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { MdTextFields } from 'react-icons/md';
 import '../styles/TextInputPage.css';
 
 interface TextInputPageProps {
