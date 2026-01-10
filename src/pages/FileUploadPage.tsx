@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { IoCloudUploadOutline } from 'react-icons/io5';
 import '../styles/FileUploadPage.css';
 
 interface FileUploadPageProps {
@@ -92,7 +93,7 @@ const FileUploadPage: React.FC<FileUploadPageProps> = ({ onFileUpload }) => {
         >
           {!selectedFile ? (
             <>
-              <div className="upload-icon">📤</div>
+              <div className="upload-icon"><IoCloudUploadOutline /></div>
               <h3>파일을 드래그하여 놓으세요</h3>
               <p>또는</p>
               <label htmlFor="file-input" className="file-input-label">
@@ -152,7 +153,7 @@ const FileUploadPage: React.FC<FileUploadPageProps> = ({ onFileUpload }) => {
         </div>
 
         <div className="info-section">
-          <h3>📋 지원하는 파일 형식:</h3>
+          <h3>지원하는 파일 형식:</h3>
           <ul>
             <li><strong>PDF</strong> - 스캔된 문서도 가능</li>
             <li><strong>DOCX</strong> - Microsoft Word 문서</li>

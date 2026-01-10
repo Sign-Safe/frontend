@@ -1,5 +1,6 @@
 import React from 'react';
 import { MdTextFields } from 'react-icons/md';
+import { LuFilePlus2 } from 'react-icons/lu';
 import '../styles/Header.css';
 
 interface HeaderProps {
@@ -27,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
             className={`nav-button ${currentPage === 'file-upload' ? 'active' : ''}`}
             onClick={() => onPageChange('file-upload')}
           >
-            📁 파일 업로드
+            <span className="icon-adjust"><LuFilePlus2 /></span> <span className="text-adjust">파일 업로드</span>
           </button>
           
           {currentPage === 'result' && (
