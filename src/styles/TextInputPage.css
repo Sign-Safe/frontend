@@ -47,25 +47,13 @@
 
 .contract-textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-.contract-textarea::placeholder {
-  color: #999;
-}
-
-.char-count {
-  text-align: right;
-  font-size: 13px;
-  color: #888;
-  margin-top: 8px;
-  margin-bottom: 20px;
+  border-color: #777C6D;
+  box-shadow: 0 0 0 3px rgba(119, 124, 109, 0.2);
 }
 
 .info-section {
-  background: #f0f4ff;
-  border-left: 4px solid #667eea;
+  background: #F0F0E8;
+  border-left: 4px solid #777C6D;
   padding: 20px;
   border-radius: 8px;
   margin-top: 30px;
@@ -73,7 +61,7 @@
 
 .info-section h3 {
   font-size: 18px;
-  color: #667eea;
+  color: #777C6D;
   margin-bottom: 12px;
 }
 
@@ -93,7 +81,7 @@
 
 .info-section li:before {
   content: '✓';
-  color: #667eea;
+  color: #777C6D;
   font-weight: bold;
   font-size: 16px;
 }

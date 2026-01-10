@@ -37,9 +37,7 @@ const TextInputPage: React.FC<TextInputPageProps> = ({ onAnalysis }) => {
           />
         </div>
 
-        <div className="char-count">
-          {text.length} / 10,000 자
-        </div>
+
 
         <div className="button-group">
           <button 

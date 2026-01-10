@@ -6,7 +6,7 @@
 
 body {
   font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: #EEEEEE;
   min-height: 100vh;
 }
 
@@ -14,7 +14,6 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   padding: 20px;
   align-items: center;
   justify-content: flex-start;
@@ -65,23 +64,23 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #777C6D;
   color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #5568d3 0%, #6a3d8b 100%);
+  background: #6A7061;
 }
 
 .btn-secondary {
-  background: #f0f2f5;
+  background: #EEEEEE;
   color: #333;
-  border: 1px solid #ddd;
+  border: 1px solid #CBCBCB;
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: #e4e6eb;
-  border-color: #bbb;
+  background: #CBCBCB;
+  border-color: #B7B89F;
 }
 
 .btn-group {

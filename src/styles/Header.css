@@ -35,7 +35,7 @@
   padding: 10px 20px;
   background: #EEEEEE;
   color: #333;
-  border: 2px solid #DDDDDD;
+  border: 2px solid #CBCBCB;
   border-radius: 6px;
   font-size: 16px;
   font-weight: 600;
@@ -45,8 +45,8 @@
 }
 
 .nav-button:hover:not(:disabled) {
-  background: #DDDDDD;
-  border-color: #CCCCCC;
+  background: #CBCBCB;
+  border-color: #B7B89F;
 }
 
 .nav-button.active {
