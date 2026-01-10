@@ -61,6 +61,7 @@ const TextInputPage: React.FC<TextInputPageProps> = ({ onAnalysis }) => {
             <li>계약서의 잠재적인 위험 조항을 자동으로 탐지합니다</li>
             <li>일방적 손해배상 조항, 무제한 책임 등을 식별합니다</li>
             <li>계약 검토 시간을 단축하는데 도움을 줍니다</li>
+            <li>업로드된 모든 계약서는 암호화된 후 분석되며, 분석 완료 시 자동으로 삭제됩니다.</li>
           </ul>
         </div>
       </div>
