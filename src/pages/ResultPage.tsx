@@ -46,7 +46,7 @@ const ResultPage: React.FC<ResultPageProps> = ({ file, text, result }) => {
               <div className="empty-icon">🔍</div>
               <h3>분석 완료</h3>
               <p>아직 탐지된 독소조항이 없습니다.</p>
-              <p style={{ fontSize: '0.9em', color: '#666' }}>
+              <p style={{ fontSize: '0.9em', color: '#777C6D' }}>
                 분석이 진행 중이거나, 계약서에 위험 조항이 없을 수 있습니다.
               </p>
             </div>

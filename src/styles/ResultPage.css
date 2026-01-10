@@ -40,7 +40,7 @@
 }
 
 .summary-card {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: #EEEEEE;
   padding: 30px;
   border-radius: 12px;
   text-align: center;
@@ -56,7 +56,7 @@
 .summary-number {
   font-size: 48px;
   font-weight: 700;
-  color: #667eea;
+  color: #777C6D;
   margin-bottom: 8px;
 }
 
@@ -76,7 +76,7 @@
 
 .filter-btn {
   padding: 8px 16px;
-  border: 2px solid #ddd;
+  border: 2px solid #CBCBCB;
   background: white;
   border-radius: 6px;
   font-size: 14px;
@@ -87,29 +87,29 @@
 }
 
 .filter-btn:hover {
-  border-color: #667eea;
-  color: #667eea;
+  border-color: #B7B89F;
+  color: #777C6D;
 }
 
 .filter-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #777C6D;
   color: white;
   border-color: transparent;
 }
 
 .filter-btn.danger {
-  border-color: #ff6b6b;
-  color: #ff6b6b;
+  border-color: #B7B89F;
+  color: #777C6D;
 }
 
 .filter-btn.warning {
-  border-color: #ffd43b;
-  color: #f59f00;
+  border-color: #B7B89F;
+  color: #777C6D;
 }
 
 .filter-btn.safe {
-  border-color: #51cf66;
-  color: #37b24d;
+  border-color: #B7B89F;
+  color: #777C6D;
 }
 
 /* 결과 리스트 */
@@ -137,6 +137,7 @@
 .empty-icon {
   font-size: 64px;
   margin-bottom: 16px;
+  color: #B7B89F;
 }
 
 .empty-state h3 {
@@ -161,18 +162,18 @@
 }
 
 .result-item.danger {
-  border-left-color: #ff6b6b;
-  background: #fff5f5;
+  border-left-color: #777C6D;
+  background: #f5f5f5;
 }
 
 .result-item.warning {
-  border-left-color: #ffd43b;
-  background: #fffbeb;
+  border-left-color: #B7B89F;
+  background: #f5f5f5;
 }
 
 .result-item.safe {
-  border-left-color: #51cf66;
-  background: #f0fdf4;
+  border-left-color: #CBCBCB;
+  background: #f5f5f5;
 }
 
 .result-header-item {
@@ -187,15 +188,18 @@
   font-size: 13px;
   padding: 4px 8px;
   border-radius: 4px;
-  background: rgba(255, 107, 107, 0.1);
+  background: rgba(119, 124, 109, 0.1);
+  color: #777C6D;
 }
 
 .result-item.warning .result-type {
-  background: rgba(255, 212, 59, 0.1);
+  background: rgba(183, 184, 159, 0.1);
+  color: #777C6D;
 }
 
 .result-item.safe .result-type {
-  background: rgba(81, 207, 102, 0.1);
+  background: rgba(203, 203, 203, 0.1);
+  color: #777C6D;
 }
 
 .result-title {
@@ -211,7 +215,7 @@
   font-style: italic;
   color: #555;
   margin: 12px 0;
-  border-left: 3px solid #667eea;
+  border-left: 3px solid #B7B89F;
   margin-left: 0;
   padding-left: 16px;
 }
@@ -234,7 +238,7 @@
   font-size: 14px;
   color: #555;
   margin-top: 12px;
-  border-left: 3px solid #51cf66;
+  border-left: 3px solid #B7B89F;
   margin-left: 0;
   padding-left: 16px;
 }
@@ -268,7 +272,7 @@
   overflow-y: auto;
   white-space: pre-wrap;
   word-break: break-word;
-  border: 1px solid #ddd;
+  border: 1px solid #CBCBCB;
 }
 
 /* 액션 버튼 */
