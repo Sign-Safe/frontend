@@ -32,6 +32,13 @@ function App() {
     setCurrentPage('result');
   };
 
+  const handleReset = () => {
+    setUploadedFile(null);
+    setInputText('');
+    setAnalysisResult(null);
+    setCurrentPage('text-input');
+  };
+
   return (
     <div className="App">
       <div className="app-container">
@@ -49,6 +56,7 @@ function App() {
             file={uploadedFile} 
             text={inputText} 
             result={analysisResult}
+            onReset={handleReset}
           />
         )}
       </main>
