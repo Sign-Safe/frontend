@@ -1,43 +1,42 @@
-import React, { useState } from 'react';
-import { IoCloudUploadOutline } from 'react-icons/io5';
-import '../styles/FileUploadPage.css';
+"use client";
+
+import { useState } from "react";
+import { IoCloudUploadOutline } from "react-icons/io5";
 
 interface FileUploadPageProps {
   onFileUpload: (file: File) => void;
 }
 
-const FileUploadPage: React.FC<FileUploadPageProps> = ({ onFileUpload }) => {
+const FileUploadPage = ({ onFileUpload }: FileUploadPageProps) => {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
 
-  const acceptedFormats = ['.pdf', '.docx', '.txt'];
+  const acceptedFormats = [".pdf", ".docx", ".txt"];
   const maxFileSize = 10 * 1024 * 1024; // 10MB
 
   const validateFile = (file: File): boolean => {
-    // 파일 형식 확인
-    const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+    const fileExtension = file.name.substring(file.name.lastIndexOf(".")).toLowerCase();
     if (!acceptedFormats.includes(fileExtension)) {
-      setError('지원하지 않는 파일 형식입니다. (PDF, DOCX, TXT만 가능)');
+      setError("지원하지 않는 파일 형식입니다. (PDF, DOCX, TXT만 가능)");
       return false;
     }
 
-    // 파일 크기 확인
     if (file.size > maxFileSize) {
-      setError('파일 크기가 10MB를 초과합니다.');
+      setError("파일 크기가 10MB를 초과합니다.");
       return false;
     }
 
-    setError('');
+    setError("");
     return true;
   };
 
   const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    if (e.type === 'dragenter' || e.type === 'dragover') {
+    if (e.type === "dragenter" || e.type === "dragover") {
       setDragActive(true);
-    } else if (e.type === 'dragleave') {
+    } else if (e.type === "dragleave") {
       setDragActive(false);
     }
   };
@@ -70,13 +69,13 @@ const FileUploadPage: React.FC<FileUploadPageProps> = ({ onFileUpload }) => {
     if (selectedFile) {
       onFileUpload(selectedFile);
     } else {
-      setError('파일을 선택해주세요.');
+      setError("파일을 선택해주세요.");
     }
   };
 
   const handleRemoveFile = () => {
     setSelectedFile(null);
-    setError('');
+    setError("");
   };
 
   return (
@@ -85,7 +84,7 @@ const FileUploadPage: React.FC<FileUploadPageProps> = ({ onFileUpload }) => {
         <h2>계약서 파일 업로드</h2>
 
         <div
-          className={`drag-drop-zone ${dragActive ? 'active' : ''}`}
+          className={`drag-drop-zone ${dragActive ? "active" : ""}`}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
@@ -93,7 +92,9 @@ const FileUploadPage: React.FC<FileUploadPageProps> = ({ onFileUpload }) => {
         >
           {!selectedFile ? (
             <>
-              <div className="upload-icon"><IoCloudUploadOutline /></div>
+              <div className="upload-icon">
+                <IoCloudUploadOutline />
+              </div>
               <h3>파일을 드래그하여 놓으세요</h3>
               <p>또는</p>
               <label htmlFor="file-input" className="file-input-label">
@@ -119,31 +120,24 @@ const FileUploadPage: React.FC<FileUploadPageProps> = ({ onFileUpload }) => {
                 <h4>{selectedFile.name}</h4>
                 <p>{(selectedFile.size / 1024).toFixed(2)} KB</p>
               </div>
-              <button 
-                className="remove-button"
-                onClick={handleRemoveFile}
-              >
+              <button className="remove-button" onClick={handleRemoveFile}>
                 ✕
               </button>
             </div>
           )}
         </div>
 
-        {error && (
-          <div className="error-message">
-            ⚠️ {error}
-          </div>
-        )}
+        {error && <div className="error-message">⚠️ {error}</div>}
 
         <div className="button-group">
-          <button 
+          <button
             className="btn btn-secondary"
             onClick={handleRemoveFile}
             disabled={!selectedFile}
           >
             파일 제거
           </button>
-          <button 
+          <button
             className="btn btn-primary"
             onClick={handleUpload}
             disabled={!selectedFile}
@@ -155,9 +149,15 @@ const FileUploadPage: React.FC<FileUploadPageProps> = ({ onFileUpload }) => {
         <div className="info-section">
           <h3>지원하는 파일 형식:</h3>
           <ul>
-            <li><strong>PDF</strong> - 스캔된 문서도 가능</li>
-            <li><strong>DOCX</strong> - Microsoft Word 문서</li>
-            <li><strong>TXT</strong> - 순수 텍스트 파일</li>
+            <li>
+              <strong>PDF</strong> - 스캔된 문서도 가능
+            </li>
+            <li>
+              <strong>DOCX</strong> - Microsoft Word 문서
+            </li>
+            <li>
+              <strong>TXT</strong> - 순수 텍스트 파일
+            </li>
           </ul>
         </div>
       </div>
