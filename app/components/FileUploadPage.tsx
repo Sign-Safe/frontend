@@ -5,9 +5,11 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 
 interface FileUploadPageProps {
   onFileUpload: (file: File) => void;
+  isAnalyzing: boolean;
+  analysisError: string;
 }
 
-const FileUploadPage = ({ onFileUpload }: FileUploadPageProps) => {
+const FileUploadPage = ({ onFileUpload, isAnalyzing, analysisError }: FileUploadPageProps) => {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [error, setError] = useState<string>("");
@@ -66,6 +68,9 @@ const FileUploadPage = ({ onFileUpload }: FileUploadPageProps) => {
   };
 
   const handleUpload = () => {
+    if (isAnalyzing) {
+      return;
+    }
     if (selectedFile) {
       onFileUpload(selectedFile);
     } else {
@@ -127,22 +132,25 @@ const FileUploadPage = ({ onFileUpload }: FileUploadPageProps) => {
           )}
         </div>
 
-        {error && <div className="error-message">⚠️ {error}</div>}
+        {(() => {
+          const displayError = error || analysisError;
+          return displayError ? <div className="error-message">⚠️ {displayError}</div> : null;
+        })()}
 
         <div className="button-group">
           <button
             className="btn btn-secondary"
             onClick={handleRemoveFile}
-            disabled={!selectedFile}
+            disabled={!selectedFile || isAnalyzing}
           >
             파일 제거
           </button>
           <button
             className="btn btn-primary"
             onClick={handleUpload}
-            disabled={!selectedFile}
+            disabled={!selectedFile || isAnalyzing}
           >
-            분석하기
+            {isAnalyzing ? "분석 중..." : "분석하기"}
           </button>
         </div>
 

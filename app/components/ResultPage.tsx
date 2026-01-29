@@ -3,10 +3,15 @@
 interface ResultPageProps {
   file: File | null;
   text: string;
+  analysis: string;
+  title: string;
+  createdAt: string;
 }
 
-const ResultPage = ({ file, text }: ResultPageProps) => {
+const ResultPage = ({ file, text, analysis, title, createdAt }: ResultPageProps) => {
   const source = file ? file.name : "텍스트 입력";
+  const displayTitle = title || source;
+  const displayDate = createdAt ? new Date(createdAt).toLocaleString() : "";
 
   return (
     <div className="result-page">
@@ -40,14 +45,31 @@ const ResultPage = ({ file, text }: ResultPageProps) => {
           </div>
 
           <div className="results-list">
-            <div className="empty-state">
-              <div className="empty-icon">🔍</div>
-              <h3>분석 완료</h3>
-              <p>아직 탐지된 독소조항이 없습니다.</p>
-              <p style={{ fontSize: "0.9em", color: "#777C6D" }}>
-                분석이 진행 중이거나, 계약서에 위험 조항이 없을 수 있습니다.
-              </p>
-            </div>
+            {analysis ? (
+              <div className="result-item safe">
+                <div className="result-header-item">
+                  <span className="result-type">🟢 분석 결과</span>
+                  <span className="result-title">{displayTitle}</span>
+                </div>
+                <p className="result-clause" style={{ whiteSpace: "pre-wrap" }}>
+                  {analysis}
+                </p>
+                {displayDate && (
+                  <p className="result-explanation">
+                    <strong>분석 시각:</strong> {displayDate}
+                  </p>
+                )}
+              </div>
+            ) : (
+              <div className="empty-state">
+                <div className="empty-icon">🔍</div>
+                <h3>분석 완료</h3>
+                <p>아직 탐지된 독소조항이 없습니다.</p>
+                <p style={{ fontSize: "0.9em", color: "#777C6D" }}>
+                  분석이 진행 중이거나, 계약서에 위험 조항이 없을 수 있습니다.
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="sample-result" style={{ display: "none" }}>

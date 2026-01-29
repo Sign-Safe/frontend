@@ -4,9 +4,15 @@ import { useState } from "react";
 
 interface TextInputPageProps {
   onAnalysis: (text: string) => void;
+  isAnalyzing: boolean;
+  analysisError: string;
 }
 
-const TextInputPage = ({ onAnalysis }: TextInputPageProps) => {
+const TextInputPage = ({
+  onAnalysis,
+  isAnalyzing,
+  analysisError,
+}: TextInputPageProps) => {
   const [text, setText] = useState<string>("");
 
   const handleAnalyze = () => {
@@ -39,17 +45,19 @@ const TextInputPage = ({ onAnalysis }: TextInputPageProps) => {
         </div>
 
         <div className="button-group">
-          <button className="btn btn-secondary" onClick={handleClear}>
+          <button className="btn btn-secondary" onClick={handleClear} disabled={isAnalyzing}>
             초기화
           </button>
           <button
             className="btn btn-primary"
             onClick={handleAnalyze}
-            disabled={!text.trim()}
+            disabled={isAnalyzing || !text.trim()}
           >
-            분석하기
+            {isAnalyzing ? "분석 중..." : "분석하기"}
           </button>
         </div>
+
+        {analysisError && <div className="error-message">⚠️ {analysisError}</div>}
 
         <div className="info-section">
           <h3>✨ 이 도구는:</h3>
