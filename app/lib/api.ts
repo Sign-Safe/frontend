@@ -1,6 +1,9 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export type AnalysisResponse = {
   analysisId: number;
   title: string;
+  userPrompt: string;
   analysis: string;
   createdAt: string;
 };
@@ -23,18 +26,26 @@ export const getOrCreateGuestUuid = (): string => {
   if (existing) {
     return existing;
   }
-  const generated = crypto.randomUUID();
+  const generated = uuidv4();
   window.localStorage.setItem(storageKey, generated);
   return generated;
 };
 
+/**
+ * [수정됨] AnalysisController의 TextAnalysisRequest 규격에 맞춤
+ */
 export const analyzeText = async (text: string, uuid: string, title?: string) => {
   const response = await fetch(`${getApiBaseUrl()}/api/analysis/text`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ text, uuid, title }),
+
+    body: JSON.stringify({
+      text: text,
+      uuid: uuid,
+      title: title || "새 계약서 분석"
+    }),
   });
 
   if (!response.ok) {
@@ -45,6 +56,9 @@ export const analyzeText = async (text: string, uuid: string, title?: string) =>
   return (await response.json()) as AnalysisResponse;
 };
 
+/**
+ * 파일 분석 (이미 AnalysisController에 잘 구현되어 있습니다)
+ */
 export const analyzeFile = async (file: File, uuid: string) => {
   const formData = new FormData();
   formData.append("file", file);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Header from "./components/Header";
 import TextInputPage from "./components/TextInputPage";
 import FileUploadPage from "./components/FileUploadPage";
@@ -19,8 +19,38 @@ export default function Home() {
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   const [analysisError, setAnalysisError] = useState<string>("");
 
-  const handlePageChange = (page: PageType) => {
+  const currentPageRef = useRef<PageType>(currentPage);
+
+  useEffect(() => {
+    currentPageRef.current = currentPage;
+  }, [currentPage]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    // 첫 진입 시 현재 단계(state)가 없으면 현재 단계를 replace로 기록
+    if (!window.history.state || !window.history.state.page) {
+      window.history.replaceState({ page: currentPageRef.current }, "");
+    }
+
+    const onPopState = (event: PopStateEvent) => {
+      const nextPage = (event.state?.page as PageType | undefined) || "text-input";
+      setCurrentPage(nextPage);
+    };
+
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
+  const pushPage = (page: PageType) => {
+    if (typeof window !== "undefined") {
+      window.history.pushState({ page }, "");
+    }
     setCurrentPage(page);
+  };
+
+  const handlePageChange = (page: PageType) => {
+    pushPage(page);
   };
 
   const handleFileUpload = async (file: File) => {
@@ -35,7 +65,7 @@ export default function Home() {
       setAnalysis(result.analysis);
       setAnalysisTitle(result.title || file.name);
       setAnalysisCreatedAt(result.createdAt || "");
-      setCurrentPage("result");
+      pushPage("result");
     } catch (error) {
       const message = error instanceof Error ? error.message : "파일 분석에 실패했습니다.";
       setAnalysisError(message);
@@ -56,7 +86,7 @@ export default function Home() {
       setAnalysis(result.analysis);
       setAnalysisTitle(result.title || "텍스트 입력 분석");
       setAnalysisCreatedAt(result.createdAt || "");
-      setCurrentPage("result");
+      pushPage("result");
     } catch (error) {
       const message = error instanceof Error ? error.message : "텍스트 분석에 실패했습니다.";
       setAnalysisError(message);
@@ -73,7 +103,14 @@ export default function Home() {
         <main className="main-content">
           {currentPage === "text-input" && (
             <TextInputPage
-              onAnalysis={handleTextAnalysis}
+              onAnalysisSuccess={(result) => {
+                setAnalysis(result.analysis);
+                setAnalysisTitle(result.title || "텍스트 입력 분석");
+                setAnalysisCreatedAt(result.createdAt || "");
+                pushPage("result");
+              }}
+              setIsAnalyzing={setIsAnalyzing}
+              setAnalysisError={setAnalysisError}
               isAnalyzing={isAnalyzing}
               analysisError={analysisError}
             />
