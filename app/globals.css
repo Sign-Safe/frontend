@@ -831,6 +831,29 @@ code {
   border: 1px solid #CBCBCB;
 }
 
+/* 원본/수정 제안 2열 레이아웃 */
+.text-two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.text-column h4 {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  /* ...existing code... */
+
+  .text-two-column {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* 액션 버튼 */
 .action-buttons {
   display: flex;
