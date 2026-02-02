@@ -337,6 +337,7 @@ code {
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-2);
   overflow: hidden;
+  margin-bottom: 20px;
 }
 
 .result-card__header {
@@ -353,12 +354,12 @@ code {
 }
 
 .result-card__body {
-  padding: 18px;
+  padding: 20px;
 }
 
 /* ResultPage 안의 텍스트 박스는 반드시 여백이 보이도록 강제 */
 .result-card__body.content-display {
-  padding: 16px;
+  padding: 20px;
 }
 
 .result-card__body.content-display * {
