@@ -74,27 +74,6 @@ export default function Home() {
     }
   };
 
-  const handleTextAnalysis = async (text: string) => {
-    setInputText(text);
-    setUploadedFile(null);
-    setAnalysis("");
-    setAnalysisError("");
-    setIsAnalyzing(true);
-    try {
-      const uuid = getOrCreateGuestUuid();
-      const result = await analyzeText(text, uuid, "텍스트 입력 분석");
-      setAnalysis(result.analysis);
-      setAnalysisTitle(result.title || "텍스트 입력 분석");
-      setAnalysisCreatedAt(result.createdAt || "");
-      pushPage("result");
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "텍스트 분석에 실패했습니다.";
-      setAnalysisError(message);
-    } finally {
-      setIsAnalyzing(false);
-    }
-  };
-
   return (
     <div className="App">
       <div className="app-container">
@@ -123,13 +102,7 @@ export default function Home() {
             />
           )}
           {currentPage === "result" && (
-            <ResultPage
-              file={uploadedFile}
-              text={inputText}
-              analysis={analysis}
-              title={analysisTitle}
-              createdAt={analysisCreatedAt}
-            />
+            <ResultPage file={uploadedFile} text={inputText} analysis={analysis} createdAt={analysisCreatedAt} />
           )}
         </main>
       </div>

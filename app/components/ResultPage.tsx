@@ -4,13 +4,10 @@ interface ResultPageProps {
   file: File | null;
   text: string;
   analysis: string;
-  title: string;
   createdAt: string;
 }
 
-const ResultPage = ({ file, text, analysis, title, createdAt }: ResultPageProps) => {
-  const source = file ? file.name : "텍스트 입력";
-  const displayTitle = title || source;
+const ResultPage = ({ file, text, analysis, createdAt }: ResultPageProps) => {
   const displayDate = createdAt ? new Date(createdAt).toLocaleString() : "";
 
   return (
@@ -18,8 +15,6 @@ const ResultPage = ({ file, text, analysis, title, createdAt }: ResultPageProps)
       <div className="result-container">
         <div className="result-header">
           <h2>📊 분석 결과</h2>
-          <p className="source-info">출처: {source}</p>
-          {displayTitle && <p className="source-info">제목: {displayTitle}</p>}
           {displayDate && <p className="source-info">분석 시각: {displayDate}</p>}
         </div>
 
