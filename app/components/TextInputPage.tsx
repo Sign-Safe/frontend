@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import type { AnalysisResponse } from "../lib/api";
 import { analyzeText, getOrCreateGuestUuid } from "../lib/api";
@@ -11,11 +11,6 @@ interface TextInputPageProps {
   setAnalysisError: (error: string) => void;
   isAnalyzing: boolean;
   analysisError: string;
-  analysis?: string;
-  analysisTitle?: string;
-  analysisCreatedAt?: string;
-  inputText?: string;
-  onRunTextAnalysis?: (text: string) => Promise<void>;
 }
 
 const TextInputPage = ({
@@ -24,55 +19,26 @@ const TextInputPage = ({
   setAnalysisError,
   isAnalyzing,
   analysisError,
-  analysis = "",
-  analysisTitle = "",
-  analysisCreatedAt = "",
-  inputText = "",
-  onRunTextAnalysis,
 }: TextInputPageProps) => {
   const [text, setText] = useState<string>("");
-  const [hasAnalyzed, setHasAnalyzed] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (inputText !== undefined) {
-      setText(inputText);
-    }
-  }, [inputText]);
-
-  // 분석 버튼을 눌렀을 때 실행되는 핵심 함수
   const handleAnalyze = async () => {
     if (!text.trim()) {
       alert("계약 내용을 입력해주세요.");
       return;
     }
 
-    // 버튼을 눌러 분석을 시작한 경우에만 결과 영역을 표시
-    setHasAnalyzed(true);
-
-    // 부모가 분석을 담당하면 그걸 사용(요구사항 변경 없이 페이지 내부 결과만 표시)
-    if (onRunTextAnalysis) {
-      await onRunTextAnalysis(text);
-      return;
-    }
-
     try {
-      // 분석 시작 상태로 변경
       setIsAnalyzing(true);
       setAnalysisError("");
 
-      // UUID 가져오기 (없으면 자동 생성됨)
       const uuid = getOrCreateGuestUuid();
-
-      // 백엔드로 분석 요청 (POST)
       const result = await analyzeText(text, uuid, "텍스트 분석 요청");
-
-      // 성공 시 부모 컴포넌트에 결과 전달 (ResultPage로 이동하기 위함)
       onAnalysisSuccess(result);
     } catch (error) {
       const message = error instanceof Error ? error.message : "분석 중 오류가 발생했습니다.";
       setAnalysisError(message);
     } finally {
-      // 성공하든 실패하든 로딩 상태는 해제
       setIsAnalyzing(false);
     }
   };
@@ -80,91 +46,103 @@ const TextInputPage = ({
   const handleClear = () => {
     setText("");
     setAnalysisError("");
-    setHasAnalyzed(false);
   };
 
-  const displayDate = analysisCreatedAt ? new Date(analysisCreatedAt).toLocaleString() : "";
-
   return (
-    <div className="text-input-page">
-      <div className="text-input-container">
-        <h2>계약서 텍스트 입력</h2>
-
-        <div className="input-section">
-          <label htmlFor="contract-text">계약 내용을 입력하세요:</label>
-          <textarea
-            id="contract-text"
-            className="contract-textarea"
-            placeholder="계약서의 내용을 복사하여 입력해주세요. 예: 갑은 을에게 변상금을 지급하지 않는다..."
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            rows={15}
-          />
+    <div className="home">
+      <div className="home-hero">
+        <div className="home-hero__text">
+          <p className="home-badge">계약서 독소 조항 탐지</p>
+          <h2 className="home-title">
+            계약서를 붙여넣고
+            <br />
+            위험 조항을 빠르게 확인하세요
+          </h2>
+          <p className="home-desc">
+            주요 위험 조항을 요약하고, 수정 방향을 함께 제안합니다.
+          </p>
         </div>
 
-        <div className="button-group">
-          <button className="btn btn-secondary" onClick={handleClear} disabled={isAnalyzing}>
-            초기화
-          </button>
-          <button
-            className="btn btn-primary"
-            onClick={handleAnalyze}
-            disabled={isAnalyzing || !text.trim()}
-          >
-            {isAnalyzing ? "분석 중..." : "분석하기"}
-          </button>
-        </div>
+        <div className="home-hero__card">
+          <div className="card">
+            <div className="card__header">
+              <h3>계약서 텍스트 입력</h3>
+              <p className="card__sub">아래에 계약서 내용을 그대로 붙여넣어 주세요.</p>
+            </div>
 
-        {analysisError && <div className="error-message">⚠️ {analysisError}</div>}
+            <div className="card__body">
+              <label className="field">
+                <span className="field__label">계약 내용</span>
+                <textarea
+                  id="contract-text"
+                  className="field__textarea"
+                  placeholder="계약서의 내용을 복사하여 입력해주세요. 예: 갑은 을에게 변상금을 지급하지 않는다..."
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                  rows={14}
+                />
+              </label>
 
-        {hasAnalyzed && analysis && (
-          <div className="text-analysis-result">
-            <section className="text-analysis-section">
-              <h3>📊 분석 결과</h3>
-              {analysisTitle && <p className="source-info">제목: {analysisTitle}</p>}
-              {displayDate && <p className="source-info">분석 시각: {displayDate}</p>}
-              <div className="content-display" style={{ whiteSpace: "pre-wrap" }}>
-                {analysis}
+              {analysisError && <div className="alert alert--error">{analysisError}</div>}
+
+              <div className="home-actions">
+                <button className="btn btn-secondary" onClick={handleClear} disabled={isAnalyzing}>
+                  초기화
+                </button>
+                <button
+                  className="btn btn-primary"
+                  onClick={handleAnalyze}
+                  disabled={isAnalyzing || !text.trim()}
+                >
+                  {isAnalyzing ? "분석 중..." : "분석하기"}
+                </button>
               </div>
-            </section>
 
-            <section className="text-analysis-section">
-              <h3>🔴 위험 조항</h3>
-              <div className="content-display" style={{ whiteSpace: "pre-wrap" }}>
-                {analysis}
+              <div className="home-note">
+                <strong>Tip</strong>
+                <span>
+                  개인정보/민감정보는 가급적 가린 뒤 입력하는 걸 권장합니다.
+                </span>
               </div>
-            </section>
-
-            <section className="text-analysis-section">
-              <h3>📝 원본 / 수정 제안</h3>
-              <div className="text-two-column">
-                <div className="text-column">
-                  <h4>원본</h4>
-                  <div className="content-display" style={{ whiteSpace: "pre-wrap" }}>
-                    {text}
-                  </div>
-                </div>
-                <div className="text-column">
-                  <h4>수정 제안</h4>
-                  <div className="content-display" style={{ whiteSpace: "pre-wrap" }}>
-                    {analysis}
-                  </div>
-                </div>
-              </div>
-            </section>
+            </div>
           </div>
-        )}
+        </div>
+      </div>
 
-        <div className="info-section">
-          <h3>✨ 이 도구는:</h3>
-          <ul>
-            <li>계약서의 잠재적인 위험 조항을 자동으로 탐지합니다</li>
-            <li>일방적 손해배상 조항, 무제한 책임 등을 식별합니다</li>
-            <li>계약 검토 시간을 단축하는데 도움을 줍니다</li>
-            <li>
-              모든 데이터는 UUID를 통해 비회원으로 안전하게 관리됩니다.
-            </li>
-          </ul>
+      <div className="home-grid">
+        <div className="card card--soft">
+          <div className="card__header">
+            <h3>무엇을 해주나요?</h3>
+            <p className="card__sub">아래 항목을 중심으로 점검합니다.</p>
+          </div>
+          <div className="card__body">
+            <ul className="feature-list">
+              <li>
+                <span className="feature-dot" />
+                일방적 손해배상 / 과도한 위약금
+              </li>
+              <li>
+                <span className="feature-dot" />
+                책임 제한/면책의 불균형
+              </li>
+              <li>
+                <span className="feature-dot" />
+                자동 갱신/해지 제한 등 분쟁 가능 조항
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="card card--soft">
+          <div className="card__header">
+            <h3>데이터는 어떻게 관리되나요?</h3>
+            <p className="card__sub">입력한 내용은 분석에만 쓰이고, 안전하게 구분해서 관리해요.</p>
+          </div>
+          <div className="card__body">
+            <p className="muted">
+              로그인 없이도 사용할 수 있도록, 브라우저마다 임시 식별번호를 만들어 저장해요. 이 번호로 내 분석 기록만 구분해요.
+            </p>
+          </div>
         </div>
       </div>
     </div>
