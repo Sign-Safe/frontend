@@ -297,10 +297,12 @@ code {
 .btn {
   border-radius: 14px;
   letter-spacing: -0.01em;
+  padding: 10px 24px;
 }
 
 .btn-primary {
   background: linear-gradient(180deg, var(--brand) 0%, var(--brand-2) 100%);
+  color: #ffffff;
 }
 
 .btn-primary:hover:not(:disabled) {
