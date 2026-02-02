@@ -33,7 +33,6 @@ const ResultPage = ({ file, text, analysis, createdAt }: ResultPageProps) => {
         <section className="result-card result-card--danger">
           <div className="result-card__header">
             <h3>위험 조항</h3>
-            <span className="result-chip result-chip--danger">주의</span>
           </div>
           <div className="result-card__body content-display" style={{ whiteSpace: "pre-wrap" }}>
             {analysis || "위험 조항이 없습니다."}
@@ -53,7 +52,6 @@ const ResultPage = ({ file, text, analysis, createdAt }: ResultPageProps) => {
           <div className="result-card result-card--inner result-card--suggestion">
             <div className="result-card__header">
               <h4>수정 제안</h4>
-              <span className="result-chip">추천</span>
             </div>
             <div className="result-card__body content-display" style={{ whiteSpace: "pre-wrap" }}>
               {analysis || "수정 제안이 없습니다."}

@@ -376,9 +376,9 @@ code {
 }
 
 .content-display {
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 14px;
+  border: none;
+  border-radius: 0;
+  padding: 0;
 }
 
 .text-two-column {
