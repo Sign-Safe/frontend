@@ -12,43 +12,54 @@ const ResultPage = ({ file, text, analysis, createdAt }: ResultPageProps) => {
 
   return (
     <div className="result-page">
-      <div className="result-container">
-        <div className="result-header">
-          <h2>📊 분석 결과</h2>
-          {displayDate && <p className="source-info">분석 시각: {displayDate}</p>}
+      <div className="result-container result-container--clean">
+        <div className="result-header result-header--clean">
+          <div className="result-title-row">
+            <h2>분석 결과</h2>
+            {displayDate && <span className="result-date">{displayDate}</span>}
+          </div>
+          <p className="result-subtitle">계약서의 위험 조항을 요약하고, 수정 제안을 제공합니다.</p>
         </div>
 
-        <section className="results-section">
-          <h3>분석 결과</h3>
-          <div className="content-display" style={{ whiteSpace: "pre-wrap" }}>
+        <section className="result-card">
+          <div className="result-card__header">
+            <h3>요약</h3>
+          </div>
+          <div className="result-card__body content-display" style={{ whiteSpace: "pre-wrap" }}>
             {analysis || "분석 결과가 없습니다."}
           </div>
         </section>
 
-        <section className="results-section">
-          <h3>위험 조항</h3>
-          <div className="content-display" style={{ whiteSpace: "pre-wrap" }}>
+        <section className="result-card result-card--danger">
+          <div className="result-card__header">
+            <h3>위험 조항</h3>
+            <span className="result-chip result-chip--danger">주의</span>
+          </div>
+          <div className="result-card__body content-display" style={{ whiteSpace: "pre-wrap" }}>
             {analysis || "위험 조항이 없습니다."}
           </div>
         </section>
 
-        <section className="results-section">
-          <h3>원본 / 수정 제안</h3>
-          <div className="text-two-column">
-            <div className="text-column">
+        <div className="text-two-column result-split">
+          <div className="result-card result-card--inner">
+            <div className="result-card__header">
               <h4>원본</h4>
-              <div className="content-display" style={{ whiteSpace: "pre-wrap" }}>
-                {text || (file && `파일: ${file.name}`) || "내용이 없습니다."}
-              </div>
             </div>
-            <div className="text-column">
-              <h4>수정 제안</h4>
-              <div className="content-display" style={{ whiteSpace: "pre-wrap" }}>
-                {analysis || "수정 제안이 없습니다."}
-              </div>
+            <div className="result-card__body content-display" style={{ whiteSpace: "pre-wrap" }}>
+              {text || (file && `파일: ${file.name}`) || "내용이 없습니다."}
             </div>
           </div>
-        </section>
+
+          <div className="result-card result-card--inner result-card--suggestion">
+            <div className="result-card__header">
+              <h4>수정 제안</h4>
+              <span className="result-chip">추천</span>
+            </div>
+            <div className="result-card__body content-display" style={{ whiteSpace: "pre-wrap" }}>
+              {analysis || "수정 제안이 없습니다."}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

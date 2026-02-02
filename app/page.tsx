@@ -5,7 +5,7 @@ import Header from "./components/Header";
 import TextInputPage from "./components/TextInputPage";
 import FileUploadPage from "./components/FileUploadPage";
 import ResultPage from "./components/ResultPage";
-import { analyzeFile, analyzeText, getOrCreateGuestUuid } from "./lib/api";
+import { analyzeFile, getOrCreateGuestUuid } from "./lib/api";
 
 type PageType = "text-input" | "file-upload" | "result";
 
@@ -14,7 +14,6 @@ export default function Home() {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [inputText, setInputText] = useState<string>("");
   const [analysis, setAnalysis] = useState<string>("");
-  const [analysisTitle, setAnalysisTitle] = useState<string>("");
   const [analysisCreatedAt, setAnalysisCreatedAt] = useState<string>("");
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   const [analysisError, setAnalysisError] = useState<string>("");
@@ -63,7 +62,6 @@ export default function Home() {
       const uuid = getOrCreateGuestUuid();
       const result = await analyzeFile(file, uuid);
       setAnalysis(result.analysis);
-      setAnalysisTitle(result.title || file.name);
       setAnalysisCreatedAt(result.createdAt || "");
       pushPage("result");
     } catch (error) {
@@ -84,8 +82,8 @@ export default function Home() {
             <TextInputPage
               onAnalysisSuccess={(result) => {
                 setAnalysis(result.analysis);
-                setAnalysisTitle(result.title || "텍스트 입력 분석");
                 setAnalysisCreatedAt(result.createdAt || "");
+                setInputText(result.userPrompt);
                 pushPage("result");
               }}
               setIsAnalyzing={setIsAnalyzing}
