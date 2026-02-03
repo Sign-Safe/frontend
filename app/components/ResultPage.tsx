@@ -9,8 +9,32 @@ interface ResultPageProps {
   createdAt: string;
 }
 
+const CORE_RESULT_TITLES = new Set([
+  "전반적인 위험도 평가",
+  "핵심 리스크 사항",
+  "법적 무효 가능성",
+  "전문가 의견",
+]);
+
+const parseCoreResultLine = (line: string): { kind: "heading" | "text"; text: string } => {
+  const trimmed = line.trim();
+
+  // 예: ### **전반적인 위험도 평가**
+  const headingMatch = trimmed.match(/^###\s*\*\*(.+?)\*\*\s*$/);
+  if (headingMatch) {
+    const title = headingMatch[1].trim();
+    if (CORE_RESULT_TITLES.has(title)) {
+      return { kind: "heading", text: title };
+    }
+  }
+
+  return { kind: "text", text: line };
+};
+
 const ResultPage = ({ file, text, analysis, summary, coreResult, createdAt }: ResultPageProps) => {
   const displayDate = createdAt ? new Date(createdAt).toLocaleString() : "";
+
+  const coreLines = (coreResult || "").split(/\r?\n/);
 
   return (
     <div className="result-page">
@@ -27,8 +51,27 @@ const ResultPage = ({ file, text, analysis, summary, coreResult, createdAt }: Re
           <div className="result-card__header">
             <h3>핵심 진단 결과</h3>
           </div>
-          <div className="result-card__body content-display" style={{ whiteSpace: "pre-wrap" }}>
-            {coreResult || "핵심 진단 결과가 없습니다."}
+          <div className="result-card__body content-display core-result" style={{ whiteSpace: "pre-wrap" }}>
+            {coreResult ? (
+              coreLines.map((line, idx) => {
+                const parsed = parseCoreResultLine(line);
+                if (parsed.kind === "heading") {
+                  return (
+                    <div key={idx} className="core-result__heading">
+                      {parsed.text}
+                    </div>
+                  );
+                }
+
+                return (
+                  <div key={idx} className="core-result__line">
+                    {parsed.text}
+                  </div>
+                );
+              })
+            ) : (
+              "핵심 진단 결과가 없습니다."
+            )}
           </div>
         </section>
 

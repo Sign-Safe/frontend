@@ -513,6 +513,19 @@ code {
   padding: 14px 16px;
 }
 
+/* 핵심 진단 결과: 특정 섹션 제목(### **...**)만 강조 */
+.core-result__heading {
+  font-weight: 800;
+  font-size: calc(1em + 1px);
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+
+.core-result__line {
+  /* 기존 pre-wrap 출력과 유사하게 줄 간격만 유지 */
+  margin: 0;
+}
+
 @media (max-width: 960px) {
   .home-hero {
     grid-template-columns: 1fr;
