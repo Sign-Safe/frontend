@@ -5,22 +5,12 @@ interface ResultPageProps {
   text: string;
   analysis: string;
   summary?: string;
+  coreResult?: string;
   createdAt: string;
 }
 
-const ResultPage = ({ file, text, analysis, summary, createdAt }: ResultPageProps) => {
+const ResultPage = ({ file, text, analysis, summary, coreResult, createdAt }: ResultPageProps) => {
   const displayDate = createdAt ? new Date(createdAt).toLocaleString() : "";
-
-  const coreResultText = (() => {
-    const source = (summary || analysis || "").trim();
-    if (!source) return "핵심 진단 결과가 없습니다.";
-
-    // summary가 길거나 analysis가 길어도 상단 핵심만 보이도록 앞부분(최대 3줄)을 표시
-    const lines = source.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
-    if (lines.length === 0) return "핵심 진단 결과가 없습니다.";
-
-    return lines.slice(0, 3).join("\n");
-  })();
 
   return (
     <div className="result-page">
@@ -38,7 +28,7 @@ const ResultPage = ({ file, text, analysis, summary, createdAt }: ResultPageProp
             <h3>핵심 진단 결과</h3>
           </div>
           <div className="result-card__body content-display" style={{ whiteSpace: "pre-wrap" }}>
-            {coreResultText}
+            {coreResult || "핵심 진단 결과가 없습니다."}
           </div>
         </section>
 

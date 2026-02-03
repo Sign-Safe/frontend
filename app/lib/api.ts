@@ -6,6 +6,7 @@ export type AnalysisResponse = {
   userPrompt: string;
   analysis: string;
   summary?: string;
+  coreResult?: string;
   createdAt: string;
 };
 

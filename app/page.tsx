@@ -15,6 +15,7 @@ export default function Home() {
   const [inputText, setInputText] = useState<string>("");
   const [analysis, setAnalysis] = useState<string>("");
   const [summary, setSummary] = useState<string>("");
+  const [coreResult, setCoreResult] = useState<string>("");
   const [analysisCreatedAt, setAnalysisCreatedAt] = useState<string>("");
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   const [analysisError, setAnalysisError] = useState<string>("");
@@ -58,6 +59,7 @@ export default function Home() {
     setInputText("");
     setAnalysis("");
     setSummary("");
+    setCoreResult("");
     setAnalysisError("");
     setIsAnalyzing(true);
     try {
@@ -65,6 +67,7 @@ export default function Home() {
       const result = await analyzeFile(file, uuid);
       setAnalysis(result.analysis);
       setSummary(result.summary || "");
+      setCoreResult(result.coreResult || "");
       setAnalysisCreatedAt(result.createdAt || "");
       pushPage("result");
     } catch (error) {
@@ -86,6 +89,7 @@ export default function Home() {
               onAnalysisSuccess={(result) => {
                 setAnalysis(result.analysis);
                 setSummary(result.summary || "");
+                setCoreResult(result.coreResult || "");
                 setAnalysisCreatedAt(result.createdAt || "");
                 setInputText(result.userPrompt);
                 pushPage("result");
@@ -109,6 +113,7 @@ export default function Home() {
               text={inputText}
               analysis={analysis}
               summary={summary}
+              coreResult={coreResult}
               createdAt={analysisCreatedAt}
             />
           )}
