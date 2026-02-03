@@ -14,6 +14,7 @@ export default function Home() {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [inputText, setInputText] = useState<string>("");
   const [analysis, setAnalysis] = useState<string>("");
+  const [summary, setSummary] = useState<string>("");
   const [analysisCreatedAt, setAnalysisCreatedAt] = useState<string>("");
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   const [analysisError, setAnalysisError] = useState<string>("");
@@ -56,12 +57,14 @@ export default function Home() {
     setUploadedFile(file);
     setInputText("");
     setAnalysis("");
+    setSummary("");
     setAnalysisError("");
     setIsAnalyzing(true);
     try {
       const uuid = getOrCreateGuestUuid();
       const result = await analyzeFile(file, uuid);
       setAnalysis(result.analysis);
+      setSummary(result.summary || "");
       setAnalysisCreatedAt(result.createdAt || "");
       pushPage("result");
     } catch (error) {
@@ -82,6 +85,7 @@ export default function Home() {
             <TextInputPage
               onAnalysisSuccess={(result) => {
                 setAnalysis(result.analysis);
+                setSummary(result.summary || "");
                 setAnalysisCreatedAt(result.createdAt || "");
                 setInputText(result.userPrompt);
                 pushPage("result");
@@ -100,7 +104,13 @@ export default function Home() {
             />
           )}
           {currentPage === "result" && (
-            <ResultPage file={uploadedFile} text={inputText} analysis={analysis} createdAt={analysisCreatedAt} />
+            <ResultPage
+              file={uploadedFile}
+              text={inputText}
+              analysis={analysis}
+              summary={summary}
+              createdAt={analysisCreatedAt}
+            />
           )}
         </main>
       </div>

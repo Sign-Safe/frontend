@@ -5,6 +5,7 @@ export type AnalysisResponse = {
   title: string;
   userPrompt: string;
   analysis: string;
+  summary?: string;
   createdAt: string;
 };
 
