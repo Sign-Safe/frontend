@@ -10,20 +10,43 @@ interface ResultPageProps {
 }
 
 const CORE_RESULT_TITLES = new Set([
-  "전반적인 위험도 평가",
-  "핵심 리스크 사항",
-  "법적 무효 가능성",
-  "전문가 의견",
+  "종합 위험도",
+  "주요 문제점",
+  "핵심 리스크",
+  "권고",
 ]);
 
 const parseCoreResultLine = (line: string): { kind: "heading" | "text"; text: string } => {
   const trimmed = line.trim();
 
-  // 예: ### **전반적인 위험도 평가**
-  const headingMatch = trimmed.match(/^###\s*\*\*(.+?)\*\*\s*$/);
-  if (headingMatch) {
-    const title = headingMatch[1].trim();
-    if (CORE_RESULT_TITLES.has(title)) {
+  // 제목 후보를 최대한 넓게 잡습니다.
+  // - ### **제목**
+  // - ### 제목 / ## 제목
+  // - 제목:
+  // - 제목 (순수 텍스트)
+  // - '... 제목' 처럼 문장 끝에 제목만 오는 경우
+  const markdownStrongHeadingMatch = trimmed.match(/^#{2,3}\s*\*\*(.+?)\*\*\s*$/);
+  const markdownPlainHeadingMatch = trimmed.match(/^#{2,3}\s*(.+?)\s*$/);
+  const colonHeadingMatch = trimmed.match(/^(.+?)\s*:\s*$/);
+
+  const titleCandidate = (
+    markdownStrongHeadingMatch?.[1] ??
+    markdownPlainHeadingMatch?.[1] ??
+    colonHeadingMatch?.[1] ??
+    ""
+  ).trim();
+
+  if (titleCandidate && CORE_RESULT_TITLES.has(titleCandidate)) {
+    return { kind: "heading", text: titleCandidate };
+  }
+
+  // 마크다운/콜론이 없는 케이스: 라인이 정확히 제목이거나, 라인 끝이 제목으로 끝나면 제목으로 처리
+  if (CORE_RESULT_TITLES.has(trimmed)) {
+    return { kind: "heading", text: trimmed };
+  }
+
+  for (const title of CORE_RESULT_TITLES) {
+    if (trimmed.endsWith(title)) {
       return { kind: "heading", text: title };
     }
   }
@@ -63,9 +86,11 @@ const ResultPage = ({ file, text, analysis, summary, coreResult, createdAt }: Re
                   );
                 }
 
+                const textToRender = parsed.text.length === 0 ? "\u00A0" : parsed.text;
+
                 return (
                   <div key={idx} className="core-result__line">
-                    {parsed.text}
+                    {textToRender}
                   </div>
                 );
               })
