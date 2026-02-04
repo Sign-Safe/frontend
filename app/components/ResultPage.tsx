@@ -2,6 +2,7 @@
 
 interface ResultPageProps {
   file: File | null;
+  fileName?: string;
   text: string;
   analysis: string;
   summary?: string;
@@ -101,7 +102,7 @@ const ResultPage = ({ file, text, analysis, summary, coreResult, createdAt }: Re
               <h4>원본</h4>
             </div>
             <div className="result-card__body content-display" style={{ whiteSpace: "pre-wrap" }}>
-              {text || (file && `파일: ${file.name}`) || "내용이 없습니다."}
+              {text || (file && `파일: ${file.name}`) || (fileName && `파일: ${fileName}`) || "내용이 없습니다."}
             </div>
           </div>
 
