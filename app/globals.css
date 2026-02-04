@@ -526,6 +526,196 @@ code {
   margin: 0;
 }
 
+/* FileUploadPage 스타일 정렬 */
+.file-upload-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.file-upload-container {
+  width: 100%;
+  max-width: 760px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(251, 251, 252, 0.95) 100%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-1);
+  padding: 28px 28px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.file-upload-container h2 {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.drag-drop-zone {
+  border: 1.5px dashed rgba(119, 124, 109, 0.45);
+  background: rgba(183, 184, 159, 0.12);
+  border-radius: 18px;
+  padding: 26px;
+  text-align: center;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-height: 230px;
+  justify-content: center;
+}
+
+.drag-drop-zone.active {
+  border-color: rgba(119, 124, 109, 0.8);
+  background: rgba(183, 184, 159, 0.22);
+  box-shadow: var(--focus);
+}
+
+.upload-icon {
+  width: 52px;
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: rgba(119, 124, 109, 0.15);
+  color: var(--brand);
+  font-size: 28px;
+}
+
+.drag-drop-zone h3 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.file-input-label {
+  cursor: pointer;
+}
+
+.file-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  font-weight: 700;
+  color: var(--brand);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.file-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.10);
+}
+
+.file-input {
+  display: none;
+}
+
+.file-info {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.selected-file {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow-2);
+}
+
+.file-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(119, 124, 109, 0.12);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.file-details h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.file-details p {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.remove-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  border: 1px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  font-weight: 800;
+  color: var(--muted);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.remove-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(183, 184, 159, 0.22);
+  border: 1px solid rgba(183, 184, 159, 0.85);
+  color: #3a3f35;
+  font-weight: 700;
+}
+
+.button-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.info-section {
+  border-top: 1px dashed var(--line-strong);
+  padding-top: 14px;
+}
+
+.info-section h3 {
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.info-section ul {
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+}
+
+.info-section li strong {
+  color: var(--text);
+}
+
 @media (max-width: 960px) {
   .home-hero {
     grid-template-columns: 1fr;
@@ -547,6 +737,14 @@ code {
 
   .home-actions {
     flex-direction: column;
+  }
+
+  .file-upload-container {
+    padding: 22px 18px;
+  }
+
+  .button-group {
+    grid-template-columns: 1fr;
   }
 
   .text-two-column {
