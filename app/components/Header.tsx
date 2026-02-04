@@ -1,7 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { MdTextFields } from "react-icons/md";
 import { LuFilePlus2 } from "react-icons/lu";
+
+import logoImage from "../../Image/SignSafe로고.png";
 
 interface HeaderProps {
   currentPage: string;
@@ -12,9 +15,16 @@ const Header = ({ currentPage, onPageChange }: HeaderProps) => {
   return (
     <header className="header">
       <div className="header-container">
-        <div className="logo">
-          <h1>🛡️ Sign Safe</h1>
-        </div>
+        <button className="logo-button" onClick={() => onPageChange("text-input")}>
+          <span className="logo">
+            <Image
+              src={logoImage}
+              alt="Sign Safe 로고"
+              className="logo-image"
+              priority
+            />
+          </span>
+        </button>
 
         <nav className="navigation">
           <button

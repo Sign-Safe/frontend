@@ -403,7 +403,7 @@ code {
 
 /* Header (상단바) 스타일 복구 */
 .header {
-  padding: 22px 30px;
+  padding: 10px 30px;
   background: rgba(255, 255, 255, 0.6);
   border-bottom: 1px solid var(--line);
 }
@@ -415,16 +415,26 @@ code {
   gap: 16px;
 }
 
-.logo h1 {
-  font-size: 20px;
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  display: flex;
+.logo {
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  margin: 0;
   white-space: nowrap;
-  color: var(--text);
+}
+
+.logo-button {
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.logo-image {
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.18));
 }
 
 .navigation {
