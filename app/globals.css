@@ -516,14 +516,21 @@ code {
 /* 핵심 진단 결과: 특정 섹션 제목만 강조 */
 .core-result__heading {
   font-weight: 800;
-  font-size: calc(1em + 3px);
-  margin-top: 10px;
-  margin-bottom: 6px;
+  font-size: calc(1em + 2px);
+  margin-top: 2px;
+  margin-bottom: 4px;
 }
 
 .core-result__line {
   /* 기존 pre-wrap 출력과 유사하게 줄 간격만 유지 */
   margin: 0;
+}
+
+/* 요약 박스: 첫 줄(계약 유형 추정) 제목 강조 */
+.summary__title {
+  font-weight: 800;
+  font-size: calc(1em + 2px);
+  margin-bottom: 8px;
 }
 
 /* FileUploadPage 스타일 정렬 */
@@ -714,6 +721,18 @@ code {
 
 .info-section li strong {
   color: var(--text);
+}
+
+/* 위험 조항 박스: `1. ...` 같은 항목 제목 강조 */
+.analysis-item__heading {
+  font-weight: 800;
+  font-size: calc(1em + 2px);
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.analysis-item__line {
+  margin: 0;
 }
 
 @media (max-width: 960px) {

@@ -54,10 +54,28 @@ const parseCoreResultLine = (line: string): { kind: "heading" | "text"; text: st
   return { kind: "text", text: line };
 };
 
+const parseAnalysisLine = (line: string): { kind: "itemHeading" | "text"; text: string } => {
+  const trimmed = line.trim();
+
+  // 예: "1. 업무 범위", "2) 지연 배상금", "3 ) 저작권의 귀속"
+  const match = trimmed.match(/^\d+\s*[\.|\)]\s*(.+?)\s*$/);
+  if (match) {
+    return { kind: "itemHeading", text: `${trimmed}` };
+  }
+
+  return { kind: "text", text: line };
+};
+
 const ResultPage = ({ file, text, analysis, summary, coreResult, createdAt }: ResultPageProps) => {
   const displayDate = createdAt ? new Date(createdAt).toLocaleString() : "";
 
   const coreLines = (coreResult || "").split(/\r?\n/);
+  const analysisLines = (analysis || "").split(/\r?\n/);
+
+  const summaryText = summary || analysis || "분석 결과가 없습니다.";
+  const summaryLines = summaryText.split(/\r?\n/);
+  const summaryTitle = summaryLines[0]?.trim() || "";
+  const summaryBody = summaryLines.slice(1).join("\n").trim();
 
   return (
     <div className="result-page">
@@ -105,7 +123,8 @@ const ResultPage = ({ file, text, analysis, summary, coreResult, createdAt }: Re
             <h3>요약</h3>
           </div>
           <div className="result-card__body content-display" style={{ whiteSpace: "pre-wrap" }}>
-            {summary || analysis || "분석 결과가 없습니다."}
+            {summaryTitle && <div className="summary__title">{summaryTitle}</div>}
+            {summaryBody ? <div className="summary__body">{summaryBody}</div> : null}
           </div>
         </section>
 
@@ -114,7 +133,28 @@ const ResultPage = ({ file, text, analysis, summary, coreResult, createdAt }: Re
             <h3>위험 조항</h3>
           </div>
           <div className="result-card__body content-display" style={{ whiteSpace: "pre-wrap" }}>
-            {analysis || "위험 조항이 없습니다."}
+            {analysis ? (
+              analysisLines.map((line, idx) => {
+                const parsed = parseAnalysisLine(line);
+                if (parsed.kind === "itemHeading") {
+                  return (
+                    <div key={idx} className="analysis-item__heading">
+                      {parsed.text}
+                    </div>
+                  );
+                }
+
+                const textToRender = parsed.text.length === 0 ? "\u00A0" : parsed.text;
+
+                return (
+                  <div key={idx} className="analysis-item__line">
+                    {textToRender}
+                  </div>
+                );
+              })
+            ) : (
+              "위험 조항이 없습니다."
+            )}
           </div>
         </section>
 
