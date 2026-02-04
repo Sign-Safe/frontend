@@ -34,6 +34,9 @@ body {
   background: radial-gradient(1200px 700px at 20% 0%, rgba(183, 184, 159, 0.22) 0%, transparent 55%),
     radial-gradient(900px 500px at 90% 10%, rgba(119, 124, 109, 0.16) 0%, transparent 60%),
     var(--bg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
   color: var(--text);
 }
 
@@ -467,6 +470,14 @@ code {
   background: linear-gradient(180deg, var(--brand) 0%, var(--brand-2) 100%);
   border-color: transparent;
   color: #fff;
+}
+
+.nav-button.active .text-adjust {
+  color: #fff;
+}
+
+.nav-button.active .icon-adjust img {
+  filter: brightness(0) invert(1);
 }
 
 .nav-button:disabled {

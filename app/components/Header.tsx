@@ -53,7 +53,10 @@ const Header = ({ currentPage, onPageChange }: HeaderProps) => {
               onClick={() => onPageChange("result")}
               disabled
             >
-              📊 분석 결과
+              <span className="icon-adjust">
+                <Image src="/file.svg" alt="분석 결과 아이콘" width={18} height={18} />
+              </span>
+              <span className="text-adjust">분석 결과</span>
             </button>
           )}
         </nav>
