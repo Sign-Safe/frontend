@@ -7,6 +7,7 @@ import { analyzeText, getOrCreateGuestUuid } from "../lib/api";
 
 interface TextInputPageProps {
   onAnalysisSuccess: (result: AnalysisResponse) => void;
+  onAnalysisStart: () => void;
   setIsAnalyzing: (loading: boolean) => void;
   setAnalysisError: (error: string) => void;
   isAnalyzing: boolean;
@@ -15,6 +16,7 @@ interface TextInputPageProps {
 
 const TextInputPage = ({
   onAnalysisSuccess,
+  onAnalysisStart,
   setIsAnalyzing,
   setAnalysisError,
   isAnalyzing,
@@ -29,6 +31,7 @@ const TextInputPage = ({
     }
 
     try {
+      onAnalysisStart();
       setIsAnalyzing(true);
       setAnalysisError("");
 

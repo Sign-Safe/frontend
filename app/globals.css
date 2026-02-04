@@ -735,6 +735,10 @@ code {
   margin: 0;
 }
 
+.original__line {
+  margin-top: 0px;
+}
+
 @media (max-width: 960px) {
   .home-hero {
     grid-template-columns: 1fr;

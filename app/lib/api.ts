@@ -7,6 +7,7 @@ export type AnalysisResponse = {
   analysis: string;
   summary?: string;
   coreResult?: string;
+  suggestion?: string;
   createdAt: string;
 };
 

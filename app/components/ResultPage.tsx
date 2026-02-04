@@ -6,6 +6,7 @@ interface ResultPageProps {
   analysis: string;
   summary?: string;
   coreResult?: string;
+  suggestion?: string;
   createdAt: string;
 }
 
@@ -66,11 +67,12 @@ const parseAnalysisLine = (line: string): { kind: "itemHeading" | "text"; text: 
   return { kind: "text", text: line };
 };
 
-const ResultPage = ({ file, text, analysis, summary, coreResult, createdAt }: ResultPageProps) => {
+const ResultPage = ({ file, text, analysis, summary, coreResult, suggestion, createdAt }: ResultPageProps) => {
   const displayDate = createdAt ? new Date(createdAt).toLocaleString() : "";
 
   const coreLines = (coreResult || "").split(/\r?\n/);
   const analysisLines = (analysis || "").split(/\r?\n/);
+  const originalLines = (text || (file && `파일: ${file.name}`) || "내용이 없습니다.").split(/\r?\n/);
 
   const summaryText = summary || analysis || "분석 결과가 없습니다.";
   const summaryLines = summaryText.split(/\r?\n/);
@@ -164,7 +166,14 @@ const ResultPage = ({ file, text, analysis, summary, coreResult, createdAt }: Re
               <h4>원본</h4>
             </div>
             <div className="result-card__body content-display" style={{ whiteSpace: "pre-wrap" }}>
-              {text || (file && `파일: ${file.name}`) || "내용이 없습니다."}
+              {originalLines.map((line, idx) => {
+                const textToRender = line.length === 0 ? "\u00A0" : line;
+                return (
+                  <div key={idx} className="original__line">
+                    {textToRender}
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -173,7 +182,7 @@ const ResultPage = ({ file, text, analysis, summary, coreResult, createdAt }: Re
               <h4>수정 제안</h4>
             </div>
             <div className="result-card__body content-display" style={{ whiteSpace: "pre-wrap" }}>
-              {analysis || "수정 제안이 없습니다."}
+              {suggestion || "수정 제안이 없습니다."}
             </div>
           </div>
         </div>
