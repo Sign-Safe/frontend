@@ -32,7 +32,9 @@ const parseCoreResultLine = (line: string): { kind: "heading" | "text"; text: st
 };
 
 const ResultPage = ({ file, text, analysis, summary, coreResult, createdAt }: ResultPageProps) => {
-  const displayDate = createdAt ? new Date(createdAt).toLocaleString() : "";
+  const displayDate = createdAt && !Number.isNaN(Date.parse(createdAt))
+    ? new Date(createdAt).toLocaleString()
+    : new Date().toLocaleString();
 
   const coreLines = (coreResult || "").split(/\r?\n/);
 
