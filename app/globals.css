@@ -34,6 +34,9 @@ body {
   background: radial-gradient(1200px 700px at 20% 0%, rgba(183, 184, 159, 0.22) 0%, transparent 55%),
     radial-gradient(900px 500px at 90% 10%, rgba(119, 124, 109, 0.16) 0%, transparent 60%),
     var(--bg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
   color: var(--text);
 }
 
@@ -403,7 +406,7 @@ code {
 
 /* Header (상단바) 스타일 복구 */
 .header {
-  padding: 22px 30px;
+  padding: 10px 30px;
   background: rgba(255, 255, 255, 0.6);
   border-bottom: 1px solid var(--line);
 }
@@ -415,16 +418,26 @@ code {
   gap: 16px;
 }
 
-.logo h1 {
-  font-size: 20px;
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  display: flex;
+.logo {
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  margin: 0;
   white-space: nowrap;
-  color: var(--text);
+}
+
+.logo-button {
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.logo-image {
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.18));
 }
 
 .navigation {
@@ -457,6 +470,14 @@ code {
   background: linear-gradient(180deg, var(--brand) 0%, var(--brand-2) 100%);
   border-color: transparent;
   color: #fff;
+}
+
+.nav-button.active .text-adjust {
+  color: #fff;
+}
+
+.nav-button.active .icon-adjust img {
+  filter: brightness(0) invert(1);
 }
 
 .nav-button:disabled {

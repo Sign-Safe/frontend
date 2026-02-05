@@ -2,6 +2,7 @@
 
 interface ResultPageProps {
   file: File | null;
+  fileName?: string;
   text: string;
   analysis: string;
   summary?: string;
@@ -67,12 +68,15 @@ const parseAnalysisLine = (line: string): { kind: "itemHeading" | "text"; text: 
   return { kind: "text", text: line };
 };
 
-const ResultPage = ({ file, text, analysis, summary, coreResult, suggestion, createdAt }: ResultPageProps) => {
-  const displayDate = createdAt ? new Date(createdAt).toLocaleString() : "";
+const ResultPage = ({ file, fileName, text, analysis, summary, coreResult, suggestion, createdAt }: ResultPageProps) => {
+  const displayDate = createdAt && !Number.isNaN(Date.parse(createdAt))
+    ? new Date(createdAt).toLocaleString()
+    : new Date().toLocaleString();
 
   const coreLines = (coreResult || "").split(/\r?\n/);
   const analysisLines = (analysis || "").split(/\r?\n/);
-  const originalLines = (text || (file && `파일: ${file.name}`) || "내용이 없습니다.").split(/\r?\n/);
+  const originalText = text || (file && `파일: ${file.name}`) || (fileName && `파일: ${fileName}`) || "내용이 없습니다.";
+  const originalLines = originalText.split(/\r?\n/);
 
   const summaryText = summary || analysis || "분석 결과가 없습니다.";
   const summaryLines = summaryText.split(/\r?\n/);

@@ -9,9 +9,13 @@ import { analyzeFile, getOrCreateGuestUuid } from "./lib/api";
 
 type PageType = "text-input" | "file-upload" | "result";
 
+const STORAGE_KEY = "signsafe:analysis";
+const PAGE_KEY = "signsafe:page";
+
 export default function Home() {
   const [currentPage, setCurrentPage] = useState<PageType>("text-input");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [uploadedFileName, setUploadedFileName] = useState<string>("");
   const [inputText, setInputText] = useState<string>("");
   const [analysis, setAnalysis] = useState<string>("");
   const [summary, setSummary] = useState<string>("");
@@ -39,10 +43,45 @@ export default function Home() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // 첫 진입 시 현재 단계(state)가 없으면 현재 단계를 replace로 기록
-    if (!window.history.state || !window.history.state.page) {
-      window.history.replaceState({ page: currentPageRef.current }, "");
+    const savedRaw = window.localStorage.getItem(STORAGE_KEY);
+    const savedPage = window.localStorage.getItem(PAGE_KEY) as PageType | null;
+
+    let initialPage: PageType = "text-input";
+
+    if (savedRaw) {
+      try {
+        const saved = JSON.parse(savedRaw) as {
+          analysis?: string;
+          summary?: string;
+          coreResult?: string;
+          createdAt?: string;
+          inputText?: string;
+          fileName?: string;
+          hasResult?: boolean;
+        };
+
+        if (saved.hasResult) {
+          setAnalysis(saved.analysis || "");
+          setSummary(saved.summary || "");
+          setCoreResult(saved.coreResult || "");
+          setAnalysisCreatedAt(saved.createdAt || "");
+          setInputText(saved.inputText || "");
+          setUploadedFileName(saved.fileName || "");
+          setUploadedFile(null);
+        }
+
+        if (saved.hasResult && savedPage === "result") {
+          initialPage = "result";
+        } else if (savedPage === "text-input" || savedPage === "file-upload") {
+          initialPage = savedPage;
+        }
+      } catch {
+        // ignore invalid storage data
+      }
     }
+
+    setCurrentPage(initialPage);
+    window.history.replaceState({ page: initialPage }, "");
 
     const onPopState = (event: PopStateEvent) => {
       const nextPage = (event.state?.page as PageType | undefined) || "text-input";
@@ -58,6 +97,24 @@ export default function Home() {
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const hasResult = Boolean(analysis || summary || coreResult);
+    const payload = {
+      analysis,
+      summary,
+      coreResult,
+      createdAt: analysisCreatedAt,
+      inputText,
+      fileName: uploadedFileName,
+      hasResult,
+    };
+
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    window.localStorage.setItem(PAGE_KEY, currentPage);
+  }, [analysis, summary, coreResult, analysisCreatedAt, inputText, uploadedFileName, currentPage]);
 
   const pushPage = (page: PageType) => {
     if (typeof window !== "undefined") {
@@ -78,6 +135,7 @@ export default function Home() {
 
   const handleFileUpload = async (file: File) => {
     setUploadedFile(file);
+    setUploadedFileName(file.name);
     setInputText("");
     setAnalysis("");
     setSummary("");
@@ -119,6 +177,8 @@ export default function Home() {
                 setSuggestion(result.suggestion || "");
                 setAnalysisCreatedAt(result.createdAt || "");
                 setInputText(result.userPrompt);
+                setUploadedFile(null);
+                setUploadedFileName("");
                 pushPage("result");
               }}
               setIsAnalyzing={setIsAnalyzing}
@@ -137,6 +197,7 @@ export default function Home() {
           {currentPage === "result" && (
             <ResultPage
               file={uploadedFile}
+              fileName={uploadedFileName}
               text={inputText}
               analysis={analysis}
               summary={summary}
