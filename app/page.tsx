@@ -5,9 +5,10 @@ import Header from "./components/Header";
 import TextInputPage from "./components/TextInputPage";
 import FileUploadPage from "./components/FileUploadPage";
 import ResultPage from "./components/ResultPage";
+import NonContractPage from "./components/NonContractPage";
 import { analyzeFile, getOrCreateGuestUuid } from "./lib/api";
 
-type PageType = "text-input" | "file-upload" | "result";
+type PageType = "text-input" | "file-upload" | "result" | "non-contract";
 
 const STORAGE_KEY = "signsafe:analysis";
 const PAGE_KEY = "signsafe:page";
@@ -24,6 +25,7 @@ export default function Home() {
   const [analysisCreatedAt, setAnalysisCreatedAt] = useState<string>("");
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   const [analysisError, setAnalysisError] = useState<string>("");
+  const [nonContractMessage, setNonContractMessage] = useState<string>("");
 
   const currentPageRef = useRef<PageType>(currentPage);
 
@@ -38,6 +40,7 @@ export default function Home() {
     setSuggestion("");
     setAnalysisCreatedAt("");
     setUploadedFile(null);
+    setNonContractMessage("");
   };
 
   useEffect(() => {
@@ -58,6 +61,8 @@ export default function Home() {
           inputText?: string;
           fileName?: string;
           hasResult?: boolean;
+          hasNonContract?: boolean;
+          nonContractMessage?: string;
         };
 
         if (saved.hasResult) {
@@ -68,10 +73,17 @@ export default function Home() {
           setInputText(saved.inputText || "");
           setUploadedFileName(saved.fileName || "");
           setUploadedFile(null);
+        } else if (saved.hasNonContract) {
+          setInputText(saved.inputText || "");
+          setUploadedFileName(saved.fileName || "");
+          setNonContractMessage(saved.nonContractMessage || "");
+          setUploadedFile(null);
         }
 
         if (saved.hasResult && savedPage === "result") {
           initialPage = "result";
+        } else if (saved.hasNonContract && savedPage === "non-contract") {
+          initialPage = "non-contract";
         } else if (savedPage === "text-input" || savedPage === "file-upload") {
           initialPage = savedPage;
         }
@@ -86,8 +98,8 @@ export default function Home() {
     const onPopState = (event: PopStateEvent) => {
       const nextPage = (event.state?.page as PageType | undefined) || "text-input";
 
-      // 뒤로가기로 결과 페이지 -> 입력 페이지로 이동하는 경우, 결과 state를 남기지 않음
-      if (nextPage !== "result") {
+      // 뒤로가기로 결과 페이지 -> 입력 페이지로 이동하는 경우, 결과/non-contract state를 남기지 않음
+      if (nextPage !== "result" && nextPage !== "non-contract") {
         resetResults();
       }
 
@@ -102,6 +114,7 @@ export default function Home() {
     if (typeof window === "undefined") return;
 
     const hasResult = Boolean(analysis || summary || coreResult);
+    const hasNonContract = Boolean(currentPage === "non-contract");
     const payload = {
       analysis,
       summary,
@@ -110,11 +123,13 @@ export default function Home() {
       inputText,
       fileName: uploadedFileName,
       hasResult,
+      hasNonContract,
+      nonContractMessage,
     };
 
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
     window.localStorage.setItem(PAGE_KEY, currentPage);
-  }, [analysis, summary, coreResult, analysisCreatedAt, inputText, uploadedFileName, currentPage]);
+  }, [analysis, summary, coreResult, analysisCreatedAt, inputText, uploadedFileName, currentPage, nonContractMessage]);
 
   const pushPage = (page: PageType) => {
     if (typeof window !== "undefined") {
@@ -122,7 +137,7 @@ export default function Home() {
     }
 
     // 사용자가 입력 화면으로 이동하면 이전 결과를 항상 폐기
-    if (page !== "result") {
+    if (page !== "result" && page !== "non-contract") {
       resetResults();
     }
 
@@ -141,10 +156,23 @@ export default function Home() {
     setSummary("");
     setCoreResult("");
     setSuggestion("");
+    setNonContractMessage("");
     setIsAnalyzing(true);
     try {
       const uuid = getOrCreateGuestUuid();
       const result = await analyzeFile(file, uuid);
+
+      // 계약서가 아니면 별도 화면으로 분기
+      if (result.isContract === false) {
+        setNonContractMessage(
+          result.analysis && result.analysis.startsWith("계약서가 아닙니다")
+            ? result.analysis
+            : "계약서가 아닙니다. 계약서 본문(조항/당사자/권리·의무 등이 포함된 텍스트)을 입력하거나 계약서 파일을 업로드해주세요."
+        );
+        pushPage("non-contract");
+        return;
+      }
+
       setAnalysis(result.analysis);
       setSummary(result.summary || "");
       setCoreResult(result.coreResult || "");
@@ -171,6 +199,20 @@ export default function Home() {
                 resetResults();
               }}
               onAnalysisSuccess={(result) => {
+                // 계약서가 아니면 별도 화면으로 분기
+                if (result.isContract === false) {
+                  setNonContractMessage(
+                    result.analysis && result.analysis.startsWith("계약서가 아닙니다")
+                      ? result.analysis
+                      : "계약서가 아닙니다. 계약서 본문(조항/당사자/권리·의무 등이 포함된 텍스트)을 복사하여 입력해주세요."
+                  );
+                  setInputText(result.userPrompt);
+                  setUploadedFile(null);
+                  setUploadedFileName("");
+                  pushPage("non-contract");
+                  return;
+                }
+
                 setAnalysis(result.analysis);
                 setSummary(result.summary || "");
                 setCoreResult(result.coreResult || "");
@@ -188,11 +230,7 @@ export default function Home() {
             />
           )}
           {currentPage === "file-upload" && (
-            <FileUploadPage
-              onFileUpload={handleFileUpload}
-              isAnalyzing={isAnalyzing}
-              analysisError={analysisError}
-            />
+            <FileUploadPage onFileUpload={handleFileUpload} isAnalyzing={isAnalyzing} analysisError={analysisError} />
           )}
           {currentPage === "result" && (
             <ResultPage
@@ -206,6 +244,7 @@ export default function Home() {
               createdAt={analysisCreatedAt}
             />
           )}
+          {currentPage === "non-contract" && <NonContractPage message={nonContractMessage} />}
         </main>
       </div>
     </div>

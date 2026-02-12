@@ -9,9 +9,10 @@ export type AnalysisResponse = {
   coreResult?: string;
   suggestion?: string;
   createdAt: string;
+  isContract: boolean;
 };
 
-const DEFAULT_API_BASE_URL = "https://signsafe.cloud";
+const DEFAULT_API_BASE_URL = "http://localhost:8080";
 
 export const getApiBaseUrl = (): string => {
   if (typeof process !== "undefined" && process.env.NEXT_PUBLIC_API_BASE_URL) {
@@ -34,9 +35,7 @@ export const getOrCreateGuestUuid = (): string => {
   return generated;
 };
 
-/**
- * [수정됨] AnalysisController의 TextAnalysisRequest 규격에 맞춤
- */
+
 export const analyzeText = async (text: string, uuid: string, title?: string) => {
   const response = await fetch(`${getApiBaseUrl()}/api/analysis/text`, {
     method: "POST",
@@ -59,9 +58,7 @@ export const analyzeText = async (text: string, uuid: string, title?: string) =>
   return (await response.json()) as AnalysisResponse;
 };
 
-/**
- * 파일 분석 (이미 AnalysisController에 잘 구현되어 있습니다)
- */
+
 export const analyzeFile = async (file: File, uuid: string) => {
   const formData = new FormData();
   formData.append("file", file);
