@@ -60,7 +60,7 @@ const parseAnalysisLine = (line: string): { kind: "itemHeading" | "text"; text: 
   const trimmed = line.trim();
 
   // 예: "1. 업무 범위", "2) 지연 배상금", "3 ) 저작권의 귀속"
-  const match = trimmed.match(/^\d+\s*[\.|\)]\s*(.+?)\s*$/);
+  const match = trimmed.match(/^\d+\s*[.)]\s*(.+?)\s*$/);
   if (match) {
     return { kind: "itemHeading", text: `${trimmed}` };
   }
@@ -186,7 +186,18 @@ const ResultPage = ({ file, fileName, text, analysis, summary, coreResult, sugge
               <h4>수정 제안</h4>
             </div>
             <div className="result-card__body content-display" style={{ whiteSpace: "pre-wrap" }}>
-              {suggestion || "수정 제안이 없습니다."}
+              {suggestion ? (
+                (suggestion || "").split(/\r?\n/).map((line, idx) => {
+                  const textToRender = line.length === 0 ? "\u00A0" : line;
+                  return (
+                    <div key={idx} className="original__line">
+                      {textToRender}
+                    </div>
+                  );
+                })
+              ) : (
+                "수정 제안이 없습니다."
+              )}
             </div>
           </div>
         </div>

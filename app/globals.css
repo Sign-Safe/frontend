@@ -757,7 +757,7 @@ code {
 }
 
 .original__line {
-  margin-top: 0px;
+  margin-top: 0;
 }
 
 @media (max-width: 960px) {

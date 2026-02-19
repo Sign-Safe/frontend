@@ -142,6 +142,13 @@ export default function Home() {
     }
 
     setCurrentPage(page);
+
+    // 결과/안내 화면은 진입 시 항상 맨 위에서 보이도록 스크롤을 초기화
+    if (typeof window !== "undefined" && (page === "result" || page === "non-contract")) {
+      window.requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      });
+    }
   };
 
   const handlePageChange = (page: PageType) => {
