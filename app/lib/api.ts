@@ -12,7 +12,7 @@ export type AnalysisResponse = {
   isContract: boolean;
 };
 
-const DEFAULT_API_BASE_URL = "https://signsafe.cloud/";
+const DEFAULT_API_BASE_URL = "https://signsafe.cloud";
 
 export const getApiBaseUrl = (): string => {
   if (typeof process !== "undefined" && process.env.NEXT_PUBLIC_API_BASE_URL) {
