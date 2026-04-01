@@ -57,7 +57,7 @@ const TextInputPage = ({
         <div className="home-hero__text">
           <p className="home-badge">계약서 독소 조항 탐지</p>
           <h2 className="home-title">
-            계약서를 붙여넣고
+            계약서를 붙여넣기
             <br />
             위험 조항을 빠르게 확인하세요
           </h2>
